@@ -1,0 +1,88 @@
+---
+import atlTech from "@/assets/images/atl-tech.png";
+import meetsoft from "@/assets/images/meetsoft.svg";
+import pashaInsurance from "@/assets/images/pasha-insurance.png";
+import type { IExperience } from "@/interfaces";
+import { Image } from "astro:assets";
+import { Badge, XAccordion } from ".";
+
+const experiences: IExperience[] = [
+  {
+    company: "Pasha Insurance",
+    position: "Frontend Developer",
+    date: "March 2024 - present",
+    achievements: [
+      "Contributing to frontend development of the CRM systems in Angular.",
+    ],
+    logo: pashaInsurance,
+  },
+  {
+    company: "Meetsoft",
+    position: "Frontend Developer",
+    date: "April 2022 - March 2024",
+    achievements: [
+      "Demonstrated proficiency in multiple front-end frameworks by adopting both Vue.js and React.",
+      "Promoted cutting-edge web technologies for building more performant and scalable applications.",
+      "Applied modern web development principles across all projects.",
+    ],
+    logo: meetsoft,
+  },
+  {
+    company: "ATL Tech",
+    position: "Frontend Developer Intern",
+    date: "April 2021 - July 2021",
+    achievements: [
+      "Developed reusable web components using Bootstrap and Sass.",
+      "Used Vue.js and Vuetify to create an admin dashboard for recruitment software.",
+      "Improved in a Scrum-based workflow, actively participating in daily stand-ups, sprint planning, and retrospectives.",
+    ],
+    logo: atlTech,
+  },
+];
+---
+
+<section>
+  <Badge variant="outline" radius="lg" title class="mb-4">Experience</Badge>
+
+  <XAccordion class="flex flex-col gap-4">
+    {
+      experiences.map((experience) => (
+        <details class="overflow-hidden rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700">
+          <summary class="flex cursor-pointer flex-col justify-between gap-4 p-4 sm:flex-row sm:items-center sm:gap-0">
+            <div class="flex items-center gap-3">
+              <div class="h-8 w-8">
+                <Image
+                  src={experience.logo}
+                  alt={experience.company}
+                  width={96}
+                />
+              </div>
+
+              <div class="flex flex-col gap-2">
+                <h2 class="text-lg/none font-medium">{experience.company}</h2>
+                <h3 class="leading-none">{experience.position}</h3>
+              </div>
+            </div>
+
+            <Badge
+              variant="outline"
+              radius="xl"
+              size="sm"
+              class="border-none bg-neutral-200 text-neutral-800 dark:bg-neutral-700 dark:text-neutral-50"
+            >
+              {experience.date}
+            </Badge>
+          </summary>
+
+          <div class="px-4 pb-4">
+            <ul class="list-inside list-disc leading-loose marker:text-green-500 dark:marker:text-yellow-500">
+              {experience.achievements.map((achievement) => (
+                <li>{achievement}</li>
+              ))}
+            </ul>
+          </div>
+        </details>
+      ))
+    }
+  </XAccordion>
+</section>

@@ -1,0 +1,65 @@
+---
+import me from "@/assets/images/me.jpg";
+import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+import { Button } from ".";
+---
+
+<header
+  class="sticky top-0 border-b border-neutral-300 bg-neutral-50/50 px-4 py-4 backdrop-blur dark:border-neutral-700 dark:bg-neutral-900/50"
+>
+  <div class="mx-auto flex max-w-3xl items-center justify-between">
+    <div class="flex items-center gap-4">
+      <div
+        class="w-12 overflow-hidden rounded-full ring-2 ring-green-500 ring-offset-1 ring-offset-neutral-50 dark:ring-yellow-500 dark:ring-offset-neutral-900"
+      >
+        <Image src={me} alt="Emin Aliyev" width={256} loading="eager" />
+      </div>
+
+      <div class="hidden" data-sticky-heading>
+        <h1 class="text-lg font-bold">Emin Aliyev</h1>
+        <h2 class="text-sm">Software Developer</h2>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <Button
+        as="a"
+        href="https://github.com/eminaliyevx/eminaliyev.com"
+        target="_blank"
+        variant="ghost"
+        size="lg"
+        icon
+        scale
+        class="rounded-2xl"
+        aria-label="Link to the source code on GitHub"
+      >
+        <Icon name="tabler:brand-github" width={24} height={24} />
+      </Button>
+
+      <Button
+        variant="ghost"
+        size="lg"
+        icon
+        scale
+        class="rounded-2xl text-yellow-500"
+        aria-label="Link to the source code on GitHub"
+        data-theme-toggle
+      >
+        <Icon
+          name="tabler:sun-filled"
+          width={24}
+          height={24}
+          class="hidden dark:block"
+        />
+
+        <Icon
+          name="tabler:moon-filled"
+          width={24}
+          height={24}
+          class="block dark:hidden"
+        />
+      </Button>
+    </div>
+  </div>
+</header>

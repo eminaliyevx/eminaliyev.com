@@ -1,0 +1,128 @@
+---
+const { class: className, ...rest } = Astro.props;
+---
+
+<x-accordion class={className} {...rest}>
+  <slot />
+</x-accordion>
+
+<script>
+  import type { IAccordionItem } from "@/interfaces";
+
+  class XAccordion extends HTMLElement {
+    private accordionItems: IAccordionItem[];
+    private currentAccordionItem!: IAccordionItem;
+
+    constructor() {
+      super();
+
+      this.accordionItems = [...this.querySelectorAll("details")].map(
+        (details) => ({
+          details,
+          summary: details.querySelector("summary") as HTMLElement,
+          content: details.querySelector("summary + div") as HTMLDivElement,
+          animation: null,
+          isExpanding: false,
+          isClosing: false,
+        }),
+      );
+
+      this.accordionItems.forEach(({ summary }, index) => {
+        summary.addEventListener("click", (event) => {
+          this.currentAccordionItem = this.accordionItems[index];
+
+          this.onSummaryClick(event);
+        });
+      });
+    }
+
+    onSummaryClick(event: MouseEvent) {
+      event.preventDefault();
+
+      if (
+        this.currentAccordionItem.isClosing ||
+        !this.currentAccordionItem.details.open
+      ) {
+        this.open();
+      }
+
+      if (
+        this.currentAccordionItem.isExpanding ||
+        this.currentAccordionItem.details.open
+      ) {
+        this.shrink();
+      }
+    }
+
+    open() {
+      this.currentAccordionItem.details.style.height = `${this.currentAccordionItem.details.offsetHeight}px`;
+      this.currentAccordionItem.details.open = true;
+
+      requestAnimationFrame(() => this.expand());
+    }
+
+    expand() {
+      this.currentAccordionItem.isExpanding = true;
+
+      const startHeight = `${this.currentAccordionItem.details.offsetHeight}px`;
+      const endHeight = `${
+        this.currentAccordionItem.summary.offsetHeight +
+        this.currentAccordionItem.content.offsetHeight
+      }px`;
+
+      if (this.currentAccordionItem.animation) {
+        this.currentAccordionItem.animation.cancel();
+      }
+
+      this.currentAccordionItem.animation =
+        this.currentAccordionItem.details.animate(
+          { height: [startHeight, endHeight] },
+          { duration: 300, easing: "cubic-bezier(0.4, 0, 0.2, 1)" },
+        );
+
+      this.currentAccordionItem.animation.onfinish = () =>
+        this.onAnimationFinish(true);
+
+      this.currentAccordionItem.animation.oncancel = () =>
+        (this.currentAccordionItem.isExpanding = false);
+    }
+
+    shrink() {
+      this.currentAccordionItem.isClosing = true;
+
+      const startHeight = `${this.currentAccordionItem.details.offsetHeight}px`;
+      const endHeight = `${this.currentAccordionItem.summary.offsetHeight}px`;
+
+      if (this.currentAccordionItem.animation) {
+        this.currentAccordionItem.animation.cancel();
+      }
+
+      this.currentAccordionItem.animation =
+        this.currentAccordionItem.details.animate(
+          {
+            height: [startHeight, endHeight],
+          },
+          {
+            duration: 300,
+            easing: "cubic-bezier(0.4, 0, 0.2, 1)",
+          },
+        );
+
+      this.currentAccordionItem.animation.onfinish = () =>
+        this.onAnimationFinish(false);
+
+      this.currentAccordionItem.animation.oncancel = () =>
+        (this.currentAccordionItem.isClosing = false);
+    }
+
+    onAnimationFinish(open: boolean) {
+      this.currentAccordionItem.details.open = open;
+      this.currentAccordionItem.animation = null;
+      this.currentAccordionItem.isExpanding = false;
+      this.currentAccordionItem.isClosing = false;
+      this.currentAccordionItem.details.style.height = "";
+    }
+  }
+
+  customElements.define("x-accordion", XAccordion);
+</script>

@@ -1,0 +1,47 @@
+---
+import type { ISkill } from "@/interfaces";
+import { Icon } from "astro-icon/components";
+import { Badge } from ".";
+
+const skills: ISkill[] = [
+  { name: "HTML5", icon: "skill-icons:html" },
+  { name: "CSS3", icon: "skill-icons:css" },
+  { name: "JavaScript", icon: "skill-icons:javascript" },
+  { name: "TypeScript", icon: "skill-icons:typescript" },
+  { name: "Bootstrap", icon: "skill-icons:bootstrap" },
+  { name: "Sass", icon: "skill-icons:sass" },
+  { name: "Tailwind CSS", icon: "logos:tailwindcss-icon" },
+  { name: "Vue.js", icon: "logos:vue" },
+  { name: "Nuxt", icon: "logos:nuxt-icon" },
+  { name: "React (Native)", icon: "logos:react" },
+  { name: "Next.js", icon: "logos:nextjs-icon" },
+  { name: "Angular", icon: "logos:angular-icon" },
+  { name: "Astro", icon: "logos:astro-icon" },
+  { name: "Node.js", icon: "logos:nodejs-icon" },
+  { name: "NestJS", icon: "logos:nestjs" },
+  { name: "PostgreSQL", icon: "logos:postgresql" },
+  { name: "Prisma", icon: "skill-icons:prisma" },
+  { name: "Git", icon: "skill-icons:git" },
+];
+---
+
+<section>
+  <Badge variant="outline" radius="lg" title class="mb-4">Skills</Badge>
+
+  <div class="flex flex-wrap gap-4">
+    {
+      skills.map((skill) => (
+        <Badge
+          clickable
+          class="h-auto gap-2 rounded-3xl bg-neutral-100 py-2 dark:bg-neutral-800"
+        >
+          <Icon name={skill.icon} width={32} height={32} />
+
+          <span class="text-neutral-900 dark:text-neutral-50">
+            {skill.name}
+          </span>
+        </Badge>
+      ))
+    }
+  </div>
+</section>

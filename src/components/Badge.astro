@@ -1,0 +1,57 @@
+---
+import { cn } from "@/lib";
+import type { HTMLTag, Polymorphic } from "astro/types";
+import { cva, type VariantProps } from "class-variance-authority";
+
+const badge = cva("flex max-w-fit items-center px-4 text-center transition", {
+  variants: {
+    variant: {
+      primary:
+        "bg-green-500 text-neutral-50 dark:bg-yellow-500 dark:text-neutral-900",
+      outline:
+        "border-2 border-green-500 text-green-500 dark:border-yellow-500 dark:text-yellow-500",
+    },
+    size: {
+      sm: "h-[28px]",
+      md: "h-8",
+    },
+    radius: {
+      base: "rounded",
+      sm: "rounded-sm",
+      md: "rounded-md",
+      lg: "rounded-lg",
+      xl: "rounded-xl",
+      none: "rounded-none",
+    },
+    title: {
+      true: "font-medium uppercase",
+    },
+    clickable: {
+      true: "cursor-pointer hover:scale-95 active:scale-95",
+    },
+  },
+});
+
+type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }> &
+  VariantProps<typeof badge>;
+
+const {
+  as: Tag = "span",
+  variant = "primary",
+  size = "md",
+  radius = "base",
+  title,
+  clickable,
+  class: className,
+  ...rest
+} = Astro.props;
+---
+
+<Tag
+  class={cn(
+    badge({ variant, size, radius, title, clickable, class: className }),
+  )}
+  {...rest}
+>
+  <slot />
+</Tag>

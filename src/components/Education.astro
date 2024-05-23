@@ -1,0 +1,88 @@
+---
+import ada from "@/assets/images/ada.svg";
+import khas from "@/assets/images/khas.png";
+import type { IEducation } from "@/interfaces";
+import { cn } from "@/lib";
+import { Image } from "astro:assets";
+import { Badge, XAccordion } from ".";
+
+const education: IEducation[] = [
+  {
+    school: "ADA University",
+    program: "Information Technology",
+    date: "September 2019 - May 2023",
+    courses: [
+      "Programming Principles",
+      "Calculus",
+      "Discrete Structures",
+      "Linear Algebra",
+      "Data Structures & Algorithms",
+      "Database Systems",
+      "IT Project Management",
+      "Artificial Intelligence",
+    ],
+    logo: ada,
+  },
+  {
+    school: "Kadir Has University (Erasmus+)",
+    program: "Computer Engineering",
+    date: "September 2021 - January 2022",
+    courses: [
+      "Differential Equations",
+      "Computer Networks",
+      "Web Programming",
+      "Cloud Computing",
+    ],
+    logo: khas,
+  },
+];
+---
+
+<section>
+  <Badge variant="outline" radius="lg" title class="mb-4">Education</Badge>
+
+  <XAccordion class="flex flex-col gap-4">
+    {
+      education.map((education) => (
+        <details class="overflow-hidden rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700">
+          <summary class="flex cursor-pointer flex-col justify-between gap-4 p-4 sm:flex-row sm:items-center sm:gap-0">
+            <div class="flex items-center gap-3">
+              <div class="h-8 w-8">
+                <Image src={education.logo} alt={education.school} width={96} />
+              </div>
+
+              <div class="flex flex-col gap-2">
+                <h2 class="text-lg/none font-medium">{education.school}</h2>
+                <h3 class="leading-none">{education.program}</h3>
+              </div>
+            </div>
+
+            <Badge
+              variant="outline"
+              radius="xl"
+              size="sm"
+              class="border-none bg-neutral-200 text-neutral-800 dark:bg-neutral-700 dark:text-neutral-50"
+            >
+              {education.date}
+            </Badge>
+          </summary>
+
+          <div class="px-4 pb-4">
+            <ul
+              class={cn(
+                "list-inside list-disc marker:text-green-500 dark:marker:text-yellow-500",
+                {
+                  "columns-2": education.courses.length > 4,
+                },
+              )}
+            >
+              {education.courses.map((course) => (
+                <li>{course}</li>
+              ))}
+            </ul>
+          </div>
+        </details>
+      ))
+    }
+  </XAccordion>
+</section>

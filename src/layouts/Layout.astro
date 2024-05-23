@@ -1,51 +1,91 @@
 ---
+import { Footer, Header } from "@/components";
+import "@/styles/globals.css";
+import "@fontsource/ubuntu/400.css";
+import "@fontsource/ubuntu/500.css";
+import "@fontsource/ubuntu/700.css";
+import { SEO, type SEOProps } from "astro-seo";
+
 interface Props {
-	title: string;
+  seo?: SEOProps;
 }
 
-const { title } = Astro.props;
+const { seo } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <SEO {...seo} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <script is:inline>
+      const loadTheme = () => {
+        const theme = (() => {
+          if (
+            typeof localStorage !== "undefined" &&
+            localStorage.getItem("theme") &&
+            ["light", "dark"].includes(localStorage.getItem("theme"))
+          ) {
+            return localStorage.getItem("theme");
+          }
+
+          if (matchMedia("(prefers-color-scheme: dark)").matches) {
+            return "dark";
+          }
+
+          return "light";
+        })();
+
+        localStorage.setItem("theme", theme);
+
+        if (theme === "dark") {
+          document.documentElement.classList.add("dark");
+        }
+      };
+
+      loadTheme();
+    </script>
+  </head>
+  <body
+    class="bg-neutral-50 font-ubuntu text-neutral-900 selection:bg-green-500 selection:text-neutral-50 dark:bg-neutral-900 dark:text-neutral-50 dark:selection:bg-yellow-500 dark:selection:text-neutral-900"
+  >
+    <Header />
+
+    <main class="px-4 pb-4">
+      <div class="mx-auto max-w-3xl">
+        <slot />
+      </div>
+    </main>
+
+    <Footer />
+
+    <script>
+      const loadScripts = () => {
+        const themeToggle = document.querySelector(
+          "[data-theme-toggle]",
+        ) as HTMLElement;
+
+        themeToggle.addEventListener("click", () => {
+          const theme = localStorage.getItem("theme") || "dark";
+
+          if (theme === "light") {
+            localStorage.setItem("theme", "dark");
+
+            document.documentElement.classList.add("dark");
+          } else {
+            localStorage.setItem("theme", "light");
+
+            document.documentElement.classList.remove("dark");
+          }
+        });
+      };
+
+      loadScripts();
+    </script>
+  </body>
 </html>
-<style is:global>
-	:root {
-		--accent: 136, 58, 234;
-		--accent-light: 224, 204, 250;
-		--accent-dark: 49, 10, 101;
-		--accent-gradient: linear-gradient(
-			45deg,
-			rgb(var(--accent)),
-			rgb(var(--accent-light)) 30%,
-			white 60%
-		);
-	}
-	html {
-		font-family: system-ui, sans-serif;
-		background: #13151a;
-		background-size: 224px;
-	}
-	code {
-		font-family:
-			Menlo,
-			Monaco,
-			Lucida Console,
-			Liberation Mono,
-			DejaVu Sans Mono,
-			Bitstream Vera Sans Mono,
-			Courier New,
-			monospace;
-	}
-</style>
