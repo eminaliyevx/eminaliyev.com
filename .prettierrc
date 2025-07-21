@@ -5,6 +5,6 @@
     "prettier-plugin-tailwindcss"
   ],
   "organizeImportsSkipDestructiveCodeActions": true,
-  "tailwindConfig": "./tailwind.config.mjs",
+  "tailwindStylesheet": "./src/styles/global.css",
   "tailwindFunctions": ["cva", "cn"]
 }
