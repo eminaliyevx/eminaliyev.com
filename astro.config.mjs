@@ -1,17 +1,13 @@
 import sitemap from "@astrojs/sitemap";
-import tailwind from "@astrojs/tailwind";
 import playformCompress from "@playform/compress";
 import playformInline from "@playform/inline";
+import tailwindcss from "@tailwindcss/vite";
 import compressor from "astro-compressor";
 import icon from "astro-icon";
 import { defineConfig } from "astro/config";
 
-// https://astro.build/config
 export default defineConfig({
   integrations: [
-    tailwind({
-      applyBaseStyles: false,
-    }),
     icon(),
     sitemap(),
     playformCompress(),
@@ -27,6 +23,7 @@ export default defineConfig({
         },
       },
     },
+    plugins: [tailwindcss()],
   },
   build: {
     assets: "assets",

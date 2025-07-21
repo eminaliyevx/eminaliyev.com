@@ -7,11 +7,11 @@ const { class: className, ...rest } = Astro.props;
 </x-accordion>
 
 <script>
-  import type { IAccordionItem } from "@/interfaces";
+  import type { AccordionItem } from "@/types";
 
   class XAccordion extends HTMLElement {
-    private accordionItems: IAccordionItem[];
-    private currentAccordionItem!: IAccordionItem;
+    private accordionItems: AccordionItem[];
+    private currentAccordionItem!: AccordionItem;
 
     constructor() {
       super();
